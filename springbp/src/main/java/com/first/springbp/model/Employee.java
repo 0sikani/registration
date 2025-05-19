@@ -30,7 +30,7 @@ public class Employee {
     }
     public void setDig_address(String dig_address) {
         this.dig_address = dig_address;
-    }
+    }  
 
     
 }

@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 import codeworld.projectjava.registration.model.Residence;
 import codeworld.projectjava.registration.model.User;
@@ -26,20 +25,6 @@ public class UserRepository {
         this.jdTemp = jdTemp;
         this.urRepo = urRepo;
     }
-
-
-
-     
-        public interface CashCardRepository extends PagingAndSortingRepository<CashCard, Long> {
-    // Inherits all CRUD methods plus these pagination methods automatically:
-    // Page<CashCard> findAll(Pageable pageable);
-    // Iterable<CashCard> findAll(Sort sort);
-    
-    // No need to explicitly declare the findAll(Pageable) method - it comes from PagingAndSortingRepository
-        }     
-    
-    
-
 
     //store a user or update a user
     public Map<String, Object> save(User user, Long residence_id){
@@ -82,7 +67,6 @@ public class UserRepository {
         users.forEach(this::loadUserResidence);
         return users;
     }
-    
     //fetch a single user
     public Optional<User> getUserById(Long id){
         String sql = "SELECT * FROM user WHERE id = ?";

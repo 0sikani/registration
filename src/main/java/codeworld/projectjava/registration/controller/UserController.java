@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,18 +31,6 @@ public class UserController {
     public List<User> getUsers(){
         return userRepo.getUsers();
     }
-
-
-    @GetMapping
-    public ResponseEntity<Page<User>> getUserss(Pageable pageable) {
-    Page<User> page = userRepo.getUsers(
-        PageRequest.of(
-            pageable.getPageNumber(),
-            pageable.getPageSize(),
-            pageable.getSortOr(Sort.by(Sort.Direction.DESC, "amount"))));
-    return ResponseEntity.ok(page);
-}
-
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getSingleUser(@PathVariable Long id){

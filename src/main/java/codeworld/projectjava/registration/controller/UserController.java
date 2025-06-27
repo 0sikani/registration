@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,10 +30,17 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping()
-    public List<User> getUsers(){
-        return userRepo.getUsers();
+    // @GetMapping()
+    // public List<User> getUsers(){
+    //     return userRepo.getUsers();
+    // }
+
+     @GetMapping
+    public ResponseEntity<Page<User>> getUsers(@PageableDefault(size = 10, sort = "user_name") Pageable pageable) {
+        Page<User> users = userRepo.getUsers(pageable);
+        return ResponseEntity.ok(users);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getSingleUser(@PathVariable Long id){

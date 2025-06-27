@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -61,12 +64,29 @@ public class UserRepository {
     }
     
     //fetch all users
-    public List<User> getUsers(){
-        String sql = "SELECT * FROM user";
-        List<User> users = jdTemp.query(sql, new UserRowMapper());
+    // public List<User> getUsers(){
+    //     String sql = "SELECT * FROM user";
+    //     List<User> users = jdTemp.query(sql, new UserRowMapper());
+    //     users.forEach(this::loadUserResidence);
+    //     return users;
+    // }
+
+    public Page<User> getUsers(Pageable pageable){
+        String countRec = "SELECT COUNT(*) FROM user";
+        int sumRec = jdTemp.queryForObject(countRec, Integer.class);
+
+        String sql = "SELECT * FROM user LIMIT ? OFFSET ?";
+        List<User> users = jdTemp.query(
+            sql, 
+            new UserRowMapper(),
+            pageable.getPageSize(),
+            pageable.getOffset()
+        );
+
         users.forEach(this::loadUserResidence);
-        return users;
+        return new PageImpl<>(users, pageable, sumRec);
     }
+
     //fetch a single user
     public Optional<User> getUserById(Long id){
         String sql = "SELECT * FROM user WHERE id = ?";

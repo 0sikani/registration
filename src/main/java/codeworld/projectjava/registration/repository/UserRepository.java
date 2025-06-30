@@ -133,7 +133,8 @@ public class UserRepository {
                 res.getLong("id"),
                 res.getString("user_name"),
                 res.getString("phone"),
-                res.getString("email")
+                res.getString("email"),
+                res.getString("password")
             );
         }
     }

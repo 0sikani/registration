@@ -63,14 +63,7 @@ public class UserRepository {
         return response;
     }
     
-    //fetch all users
-    // public List<User> getUsers(){
-    //     String sql = "SELECT * FROM user";
-    //     List<User> users = jdTemp.query(sql, new UserRowMapper());
-    //     users.forEach(this::loadUserResidence);
-    //     return users;
-    // }
-
+ 
     public Page<User> getUsers(Pageable pageable){
         String countRec = "SELECT COUNT(*) FROM user";
         int sumRec = jdTemp.queryForObject(countRec, Integer.class);

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -85,6 +86,39 @@ public class UserRepository {
         String sql = "SELECT * FROM user WHERE id = ?";
         return jdTemp.query(sql, new UserRowMapper(), id).stream().peek(this::loadUserResidence).findFirst();
     } 
+
+    //login logic
+    // public Map<String, Object> login(String email, String password){
+    //     Map<String, Object> response = new HashMap<>();
+
+    //     String sql = "SELECT * FROM user WHERE email = ? AND password = ?";
+    //     User user = jdTemp.queryForObject(sql, new UserRowMapper(), email, password);
+
+    //     if(user != null){
+    //         boolean message = true;
+    //         response.put("message", message);
+    //         response.put("user", user);
+    //     }
+    //     else{
+    //         boolean message = false;
+    //         response.put("message", message);
+    //     }
+    //     return response;
+    // }
+
+    //find user by email
+    public Optional<User> findUserByEmail(String email) {
+
+        String sql = "SELECT * FROM user WHERE email = ?";
+    
+        try {
+                User user = jdTemp.queryForObject(sql, new UserRowMapper(), email);
+                return Optional.ofNullable(user);
+            } 
+        catch (EmptyResultDataAccessException e) {
+                return Optional.empty();
+        }
+    }
     
     //store user residence
     private void storeUR(UserResidence userResidence, UserResidenceRepository userResidenceRepo, Long userId, Long residenceId){

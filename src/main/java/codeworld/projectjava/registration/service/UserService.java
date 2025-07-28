@@ -12,14 +12,11 @@ import java.util.stream.Stream;
 public class UserService {
     private final UserRepository userRepository;
     private final UserResidenceRepository userResidenceRepository;
-    // private final ResidenceService residenceService;
 
     public UserService(UserRepository userRepository, 
-                     UserResidenceRepository userResidenceRepository,
-                     ResidenceService residenceService) {
+                     UserResidenceRepository userResidenceRepository) {
         this.userRepository = userRepository;
         this.userResidenceRepository = userResidenceRepository;
-        // this.residenceService = residenceService;
     }
 
     public User createUser(User user) {

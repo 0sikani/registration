@@ -5,7 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+// import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
 public class DatabaseConfig {
@@ -15,8 +15,8 @@ public class DatabaseConfig {
         return new JdbcTemplate(dtsource);
     }
 
-    @Bean
-    public NamedParameterJdbcTemplate npJdbcTemp(DataSource dtSource){
-        return new NamedParameterJdbcTemplate(dtSource);
-    }
+    // @Bean
+    // public NamedParameterJdbcTemplate npJdbcTemp(DataSource dtSource){
+    //     return new NamedParameterJdbcTemplate(dtSource);
+    // }
 }

@@ -1,51 +1,59 @@
 package codeworld.projectjava.registration.repository;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+import codeworld.projectjava.registration.model.UserResidence;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-import codeworld.projectjava.registration.model.UserResidence;
-
 @Repository
 public class UserResidenceRepository {
+    private final JdbcTemplate jdbcTemplate;
 
-    private final JdbcTemplate jTemp;
-
-    public UserResidenceRepository(JdbcTemplate jTemp){
-        this.jTemp = jTemp;
-    }
-    
-    //store user residence
-    public UserResidence storeUserResidence(UserResidence userResidence){
-        String sql = "INSERT INTO user_residence(user_id, residence_id) VALUES(?, ?)";
-        jTemp.update(sql, userResidence.getUserId(), userResidence.getResidenceId());
-        return  userResidence;
+    public UserResidenceRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    //fetch user all residence
-    public List<UserResidence> getUserResidence(){
-        String sql = "SELECT * FROM user_residence";
-        return jTemp.query(sql, new UserResidenceMapper());
+    public void save(UserResidence userResidence) {
+        String sql = "INSERT INTO user_residence (user_id, residence_id) VALUES (?, ?)";
+        jdbcTemplate.update(sql, userResidence.getUserId(), userResidence.getResidenceId());
     }
 
-    //delete user residence
-    public void deleteUserResidence(Long id){
+    public List<UserResidence> findByUserId(Long userId) {
+        String sql = "SELECT * FROM user_residence WHERE user_id = ?";
+        return jdbcTemplate.query(sql, new UserResidenceRowMapper(), userId);
+    }
+
+    public List<UserResidence> findByResidenceId(Long residenceId) {
+        String sql = "SELECT * FROM user_residence WHERE residence_id = ?";
+        return jdbcTemplate.query(sql, new UserResidenceRowMapper(), residenceId);
+    }
+
+    public void deleteAssociation(Long userId, Long residenceId) {
+        String sql = "DELETE FROM user_residence WHERE user_id = ? AND residence_id = ?";
+        jdbcTemplate.update(sql, userId, residenceId);
+    }
+
+    public void deleteByUserId(Long userId) {
         String sql = "DELETE FROM user_residence WHERE user_id = ?";
-        jTemp.update(sql, id);
+        jdbcTemplate.update(sql, userId);
     }
 
-    private static class UserResidenceMapper implements RowMapper<UserResidence>{
+    public void deleteByResidenceId(Long residenceId) {
+        String sql = "DELETE FROM user_residence WHERE residence_id = ?";
+        jdbcTemplate.update(sql, residenceId);
+    }
+
+    private static class UserResidenceRowMapper implements RowMapper<UserResidence> {
         @Override
-        public UserResidence mapRow(ResultSet res, int row) throws SQLException{
+        public UserResidence mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new UserResidence(
-                res.getLong("user_id"),
-                res.getLong("residence_id")
+                rs.getLong("user_id"),
+                rs.getLong("residence_id")
             );
         }
     }
-
 }

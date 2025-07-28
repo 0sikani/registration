@@ -51,8 +51,6 @@ public class UserResidenceService {
     }
 
     public void deleteAssociation(Long userId, Long residenceId) {
-        String sql = "DELETE FROM user_residence WHERE user_id = ? AND residence_id = ?";
-        // Implementation would use JdbcTemplate directly if needed
         userResidenceRepository.deleteAssociation(userId, residenceId);
     }
 }

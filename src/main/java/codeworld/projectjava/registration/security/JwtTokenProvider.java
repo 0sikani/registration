@@ -4,7 +4,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
 import java.util.Date;
+
 
 @Component
 public class JwtTokenProvider {
@@ -15,11 +19,13 @@ public class JwtTokenProvider {
     private int jwtExpiration;
 
     public String generateToken(String email) {
-        return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration * 1000L))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
-    }
+    Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());  // Convert String to Key
+
+    return Jwts.builder()
+            .setSubject(email)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration * 1000L))
+            .signWith(key, SignatureAlgorithm.HS512)  // New signature method
+            .compact();
+}
 }

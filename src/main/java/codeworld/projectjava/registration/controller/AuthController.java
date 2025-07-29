@@ -22,20 +22,28 @@ public class AuthController {
         @RequestParam("userName") String userName,
         @RequestParam("email") String email,
         @RequestParam("phone") String phone,
+        @RequestParam("role") String role,
         @RequestParam("passWord") String passWord
       ){
             User user = new User();
             user.setUserName(userName);
             user.setEmail(email);
             user.setPhone(phone);
+            user.setRole(role);
             user.setPassWord(passWord);
 
             return ResponseEntity.ok(authService.register(user));
        }
 
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
-        return ResponseEntity.ok(authService.authenticate(authRequest));
+    @PostMapping(value = "/login", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AuthResponse> login(
+        @RequestParam("email") String email,
+        @RequestParam("password") String password
+    ) {
+        AuthRequest login = new AuthRequest();
+        login.setEmail(email);
+        login.setPassWord(password);
+        return ResponseEntity.ok(authService.authenticate(login));
     }
 }

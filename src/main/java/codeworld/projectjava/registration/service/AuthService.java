@@ -31,9 +31,10 @@ public class AuthService {
         usr.setUserName(user.getUserName());
         usr.setPhone(user.getPhone());
         usr.setEmail(user.getEmail());
+        usr.setRole(user.getRole());
         usr.setPassWord(passwordEncoder.encode(user.getPassWord()));
         
-        User savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(usr);
         
         String token = tokenProvider.generateToken(savedUser.getEmail());
         
@@ -46,7 +47,7 @@ public class AuthService {
 
     public AuthResponse authenticate(AuthRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassWord())) {
             throw new RuntimeException("Invalid credentials");
@@ -66,6 +67,7 @@ public class AuthService {
         usr.setId(user.getId());
         usr.setUserName(user.getUserName());
         usr.setEmail(user.getEmail());
+        usr.setRole(user.getRole());
         usr.setPhone(user.getPhone());
         return usr;
     }

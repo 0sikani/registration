@@ -27,5 +27,5 @@ public class JwtTokenProvider {
             .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration * 1000L))
             .signWith(key, SignatureAlgorithm.HS512)  // New signature method
             .compact();
-}
+   }
 }

@@ -1,5 +1,6 @@
 package codeworld.projectjava.registration.repository;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,14 +20,14 @@ public class UserRepository {
 
     public User save(User user) {
         if (user.getId() == null) {
-            String sql = "INSERT INTO user (user_name, phone, email, password) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql, user.getUserName(), user.getPhone(), user.getEmail(), user.getPassWord());
+            String sql = "INSERT INTO user (user_name, phone, email, role, password) VALUES (?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sql, user.getUserName(), user.getPhone(), user.getEmail(), user.getRole(), user.getPassWord());
             
             Long id = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
             user.setId(id);
         } else {
-            String sql = "UPDATE user SET user_name = ?, phone = ?, email = ?, password = ? WHERE id = ?";
-            jdbcTemplate.update(sql, user.getUserName(), user.getPhone(), user.getEmail(), user.getPassWord(), user.getId());
+            String sql = "UPDATE user SET user_name = ?, phone = ?, email = ?, role = ?, password = ? WHERE id = ?";
+            jdbcTemplate.update(sql, user.getUserName(), user.getPhone(), user.getEmail(), user.getRole(), user.getPassWord(), user.getId());
         }
         return user;
     }
@@ -46,7 +47,7 @@ public class UserRepository {
         try {
             User user = jdbcTemplate.queryForObject(sql, new UserRowMapper(), email);
             return Optional.ofNullable(user);
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException  e) {
             return Optional.empty();
         }
     }
@@ -69,6 +70,7 @@ public class UserRepository {
             user.setUserName(rs.getString("user_name"));
             user.setPhone(rs.getString("phone"));
             user.setEmail(rs.getString("email"));
+            user.setRole(rs.getString("role"));
             user.setPassWord(rs.getString("password"));
             return user;
         }

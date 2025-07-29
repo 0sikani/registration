@@ -1,5 +1,6 @@
 package codeworld.projectjava.registration.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import codeworld.projectjava.registration.model.AuthRequest;
@@ -16,10 +17,22 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody User user) {
-        return ResponseEntity.ok(authService.register(user));
-    }
+    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        public ResponseEntity<AuthResponse> register(
+        @RequestParam("userName") String userName,
+        @RequestParam("email") String email,
+        @RequestParam("phone") String phone,
+        @RequestParam("passWord") String passWord
+      ){
+            User user = new User();
+            user.setUserName(userName);
+            user.setEmail(email);
+            user.setPhone(phone);
+            user.setPassWord(passWord);
+
+            return ResponseEntity.ok(authService.register(user));
+       }
+
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {

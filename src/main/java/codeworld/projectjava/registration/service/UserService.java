@@ -20,10 +20,6 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        // User usr = new User();
-        // usr.setUserName(user.getUserName());
-        // usr.setPhone(user.getPhone());
-        // usr.setEmail(user.getEmail());
         User savedUser = userRepository.save(user);
          
         return savedUser;

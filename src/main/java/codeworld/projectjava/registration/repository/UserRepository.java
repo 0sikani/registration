@@ -37,7 +37,7 @@ public class UserRepository {
         try {
             User user = jdbcTemplate.queryForObject(sql, new UserRowMapper(), id);
             return Optional.ofNullable(user);
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }

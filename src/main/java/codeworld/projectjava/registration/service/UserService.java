@@ -14,14 +14,13 @@ public class UserService {
     private final UserResidenceRepository userResidenceRepository;
 
     public UserService(UserRepository userRepository, 
-                     UserResidenceRepository userResidenceRepository) {
+                       UserResidenceRepository userResidenceRepository) {
         this.userRepository = userRepository;
         this.userResidenceRepository = userResidenceRepository;
     }
 
     public User createUser(User user) {
         User savedUser = userRepository.save(user);
-         
         return savedUser;
     }
 
@@ -30,8 +29,7 @@ public class UserService {
     }
 
     public Stream<User> getAllUsers() {
-        return userRepository.findAll().stream();
-               
+        return userRepository.findAll().stream();        
     }
 
     public void deleteUser(Long id) {

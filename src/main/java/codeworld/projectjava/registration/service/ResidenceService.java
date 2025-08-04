@@ -28,7 +28,7 @@ public class ResidenceService {
         resdence.setCity(residence.getCity());
         Residence savedResidence = residenceRepository.save(resdence);
         
-        if(savedResidence.getId() != null){
+        if(savedResidence != null){
             resdence.setId(savedResidence.getId());
         }
         

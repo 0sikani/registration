@@ -52,7 +52,7 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    // ✅ Add this method
+    
     public boolean validateAccessToken(String token) {
         try {
             Jwts.parserBuilder()

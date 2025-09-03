@@ -2,11 +2,11 @@ package codeworld.projectjava.registration.security;
 
 import codeworld.projectjava.registration.repository.UserRepository;
 import codeworld.projectjava.registration.service.TokenBlacklistService;
-import codeworld.projectjava.registration.service.TokenService;
+// import codeworld.projectjava.registration.service.TokenService;
 import codeworld.projectjava.registration.service.RateLimitingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+// import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -42,18 +42,18 @@ public class SecurityConfig {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider tokenProvider;
-    private final TokenService tokenService;
+    // private final TokenService tokenService;
     private final TokenBlacklistService blacklistService;
     private final RateLimitingService rateLimitingService;
 
     public SecurityConfig(UserRepository userRepository,
                           JwtTokenProvider tokenProvider,
-                          TokenService tokenService,
+                        //   TokenService tokenService,
                           TokenBlacklistService blacklistService,
                           RateLimitingService rateLimitingService) {
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
-        this.tokenService = tokenService;
+        // this.tokenService = tokenService;
         this.blacklistService = blacklistService;
         this.rateLimitingService = rateLimitingService;
     }

@@ -40,7 +40,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(
         @RequestParam("email") String email,
         @RequestParam("password") String password
-    ) {
+     ){
         AuthRequest login = new AuthRequest();
         login.setEmail(email);
         login.setPassWord(password);
